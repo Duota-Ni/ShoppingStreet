@@ -128,12 +128,12 @@ export default {
   mounted(){
     console.log(document.querySelector('.wrapper'));
     console.log(this.$refs.aaa);
-    // this.scroll = new BScroll(document.querySelector('.wrapper'),{
+    this.scroll = new BScroll(document.querySelector('.wrapper'),{
 
-    // })
-    this.$nextTick(() => {
-        this.scroll = new BScroll(this.$refs.aaa, {})
-      })
+    })
+    // this.$nextTick(() => {
+    //     this.scroll = new BScroll(this.$refs.aaa, {})
+    //   })
   }
 }
 </script>
