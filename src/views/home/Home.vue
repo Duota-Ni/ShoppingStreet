@@ -3,19 +3,23 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <home-swiper :banners="banners" />
-    <recommend-view :recommends="recommends" />
-    <feature-view />
-    <tab-control :titles="['流行','新款','精选']" @tabClick="tabClick"/>
-    <goods-list :goods="showGoods" />
-    
+    <scroll class="content">
+      <home-swiper :banners="banners" />
+      <recommend-view :recommends="recommends" />
+      <feature-view />
+      <tab-control :titles="['流行','新款','精选']" @tabClick="tabClick" />
+      <goods-list :goods="showGoods" />
+    </scroll>
+    <back-top />
   </div>
 </template>
 
 <script>
 import NavBar from "components/common/navbar/NavBar";
+import Scroll from "components/common/scroll/Scroll";
 import TabControl from "components/content/tabControl/TabControl";
-import GoodsList from "components/content/goods/GoodsList"
+import GoodsList from "components/content/goods/GoodsList";
+import BackTop from "components/content/backTop/BackTop";
 
 import HomeSwiper from "./childComps/HomeSwiper";
 import RecommendView from "./childComps/RecommendView";
@@ -29,6 +33,8 @@ export default {
     NavBar,
     TabControl,
     GoodsList,
+    Scroll,
+    BackTop,
 
     HomeSwiper,
     RecommendView,
@@ -43,7 +49,7 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] },
       },
-      currenttype:'pop'
+      currenttype: "pop",
     };
   },
   created() {
@@ -51,28 +57,28 @@ export default {
     this.getHomeMultidata();
 
     //2.请求商品数据
-    this.getHomeGoods('pop');
-    this.getHomeGoods('new');
-    this.getHomeGoods('sell');
+    this.getHomeGoods("pop");
+    this.getHomeGoods("new");
+    this.getHomeGoods("sell");
   },
-  computed:{
-    showGoods(){
-      return this.goods[this.currenttype].list
-    }
+  computed: {
+    showGoods() {
+      return this.goods[this.currenttype].list;
+    },
   },
   methods: {
     //事件监听相关的方法
-    tabClick(index){
-      switch(index){
+    tabClick(index) {
+      switch (index) {
         case 0:
-          this.currenttype = 'pop'
+          this.currenttype = "pop";
           break;
         case 1:
-          this.currenttype = 'new'
+          this.currenttype = "new";
           break;
         case 2:
-          this.currenttype = 'sell'
-          break
+          this.currenttype = "sell";
+          break;
       }
     },
 
@@ -84,10 +90,10 @@ export default {
       });
     },
     getHomeGoods(type) {
-      const page = this.goods[type].page + 1
+      const page = this.goods[type].page + 1;
       getHomeGoods(type, page).then((res) => {
-        this.goods[type].list.push(...res.data.list)
-        this.goods[type].page += 1
+        this.goods[type].list.push(...res.data.list);
+        this.goods[type].page += 1;
       });
     },
   },
@@ -97,6 +103,9 @@ export default {
 <style scoped>
 #home {
   padding-top: 44px;
+  height: 100vh;
+
+  position: relative;
 }
 .home-nav {
   background-color: var(--color-tint);
@@ -113,4 +122,19 @@ export default {
   top: 44px;
   z-index: 99;
 }
+.content {
+  /* height: 300px; */
+  overflow: hidden;
+
+  position: absolute;
+  top: 44px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
+}
+/* .content {
+  height: calc(100% - 93px);
+  overflow: hidden;
+  margin-top: 51px;
+} */
 </style>
